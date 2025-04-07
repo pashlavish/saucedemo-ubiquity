@@ -1,0 +1,11 @@
+{
+  "name": "saucedemo-ubiquity",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "npx cypress run",
+    "test:open": "npx cypress open"
+  },
+  "devDependencies": {
+    "cypress": "^14.1.0"
+  }
+}
