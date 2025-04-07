@@ -1,0 +1,56 @@
+name: Cypress Tests
+on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level for the test run'
+        required: false
+        default: 'info'
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Use Node.js v20 (or adjust as needed)
+          cache: 'npm' # Cache npm dependencies for faster runs
+
+      - name: Install dependencies
+        run: npm ci # Use npm ci for a clean install based on package-lock.json
+
+      - name: Run Cypress tests
+        run: npx cypress run
+        env:
+          CYPRESS_LOG_LEVEL: ${{ github.event.inputs.logLevel || 'info' }} # Use manual input or default to 'info'
+
+      # Upload Cypress screenshots as artifacts (if tests fail)
+      - name: Upload screenshots
+        if: failure() # Only run this step if the tests fail
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+          retention-days: 7 # Keep artifacts for 7 days
+
+      # Upload Cypress videos as artifacts
+      - name: Upload videos
+        if: always() # Always upload videos, even if tests pass
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-videos
+          path: cypress/videos
+          retention-days: 7 # Keep artifacts for 7 days
