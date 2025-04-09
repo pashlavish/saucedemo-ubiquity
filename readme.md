@@ -27,8 +27,6 @@ This project contains end-to-end (E2E) tests for the [saucedemo.com](https://www
    - Verifies cart contents before finishing the purchase and checks the success message.
 3. **Smoke Tests (Bonus)**:
    - Added tests for inventory page load, cart accessibility, and logout functionality to ensure critical paths work.
-4. **README**:
-   - Provides clear instructions for setup, running tests, and understanding the test suite.
 5. **Best Practices**:
    - Used fixtures for test data.
    - Created custom commands for reusability.
